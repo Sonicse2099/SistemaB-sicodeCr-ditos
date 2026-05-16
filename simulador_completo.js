@@ -118,11 +118,11 @@ function limpiar() {
 function eliminarCliente(cedula) {
     for (let i = 0; i < clientes.length; i++) {
         if (clientes[i].cedula === cedula) {
-            clientes.splice(i, 1); // splice(posición, cuántos eliminar)
+            clientes.splice(i, 1);
             break;
         }
     }
-    pintarClientes(); // redibuja la tabla sin ese cliente
+    pintarClientes();
 }
 
 function buscarClienteCredito()  { /* próximo taller */ }
