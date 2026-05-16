@@ -115,6 +115,16 @@ function limpiar() {
     clienteSeleccionado = null;
 }
 
+function eliminarCliente(cedula) {
+    for (let i = 0; i < clientes.length; i++) {
+        if (clientes[i].cedula === cedula) {
+            clientes.splice(i, 1); // splice(posición, cuántos eliminar)
+            break;
+        }
+    }
+    pintarClientes(); // redibuja la tabla sin ese cliente
+}
+
 function buscarClienteCredito()  { /* próximo taller */ }
 function calcularCredito()       { /* próximo taller */ }
 function solicitarCredito()      { /* próximo taller */ }
