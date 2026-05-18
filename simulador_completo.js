@@ -217,20 +217,26 @@ function pintarCreditos(lista) {
             </tr>`;
     }
 }
-function buscarCreditosCliente() {
-    let cedula    = recuperaraTexto("buscarCedulaListado");
+
+function eliminarCredito(indice) {
+    creditos.splice(indice, 1);
+    pintarCreditos(creditos);
+}
+
+function buscarCreditos(cedula) {
     let resultado = [];
- 
+
     for (let i = 0; i < creditos.length; i++) {
         if (creditos[i].cedula === cedula) {
             resultado.push(creditos[i]);
         }
     }
- 
-    pintarCreditos(resultado);
+
+    return resultado;
 }
 
-function eliminarCredito(indice) {
-    creditos.splice(indice, 1);
-    pintarCreditos(creditos);
+function buscarCreditosCliente() {
+    let cedula    = recuperaraTexto("buscarCedulaListado");
+    let resultado = buscarCreditos(cedula);
+    pintarCreditos(resultado);
 }
