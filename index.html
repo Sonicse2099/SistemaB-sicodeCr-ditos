@@ -16,12 +16,19 @@
   <button onclick="mostrarSeccion('clientes')">Clientes</button>
   <button onclick="mostrarSeccion('credito')">Créditos</button>
   <button onclick="mostrarSeccion('listaCreditos')">Historial</button>
+  <button onclick="mostrarCreditosVIP()">⭐ Créditos VIP</button>
+  <button onclick="mostrarSeccion('acercaDe')">Acerca de</button>
+
 </nav>
  
 <section id="parametros">
   <h2>Configurar Parámetros</h2>
  
   <label>Tasa de interés:</label>
+  <label>Monto máximo de crédito:</label>
+  <input type="number" id="montoMaximoParam" placeholder="Ej: 10000" min="0">
+  <span>$</span>
+  <br>
 
   <input type="number" id="tasaInteres" min="10" max="20" value="15">
   <span>%</span>
@@ -38,6 +45,8 @@
   <input type="text"   id="cedula"   placeholder="Cédula">
   <input type="text"   id="nombre"   placeholder="Nombre">
   <input type="text"   id="apellido" placeholder="Apellido">
+  <input type="text" id="telefono" placeholder="Teléfono">
+
   <input type="number" id="ingresos" placeholder="Ingresos">
   <input type="number" id="egresos"  placeholder="Egresos">
  
@@ -51,6 +60,7 @@
         <th>Cédula</th>
         <th>Nombre</th>
         <th>Apellido</th>
+        <th>Teléfono</th> <!-- para el video paso 1 -->
         <th>Ingresos</th>
         <th>Egresos</th>
         <th>Acciones</th>
@@ -104,6 +114,34 @@
     <tbody id="tablaCreditos">
     </tbody>
   </table>
+</section>
+
+<section id="creditosVIP">
+  <h2>⭐ Créditos VIP (Mayores a $5,000)</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>Cédula</th>
+        <th>Nombre</th>
+        <th>Apellido</th>
+        <th>Monto</th>
+        <th>Tasa</th>
+        <th>Plazo</th>
+        <th>Cuota</th>
+      </tr>
+    </thead>
+    <tbody id="tablaVIP"></tbody>
+  </table>
+  <p id="mensajeVIP"></p>
+</section>
+
+<section id="acercaDe">
+  <h2>Acerca del Desarrollador</h2>
+  <p><strong>Nombre:</strong> Sonicse</p>
+  <p><strong>Carrera:</strong> Ingeniería en Sistemas</p>
+  <p><strong>Universidad:</strong> Pontificia Universidad Católica del Ecuador</p>
+  <p><strong>Correo:</strong> joseluissonico@hotmail.com</p>
+  <p><em>"¡Para mí nunca se trató de caballerosidad! Simplemente tengo que hacer lo que tengo que hacer, ¡eso es todo!" — Sonic</em></p>
 </section>
  
 <script src="simulador_completo.js"></script>

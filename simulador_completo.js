@@ -2,18 +2,25 @@
 let clientes = [];
 let creditos = [];
  
-let tasaInteres         = 15;
+let tasaInteres = 15;
+//para el video paso 1
+let montoMaximo = 0;
+
 let clienteSeleccionado = null;
-let cuotaCalculada      = 0;
-let montoCalculado      = 0;
-let plazoCalculado      = 0;
-let creditoAprobado     = false;
+let cuotaCalculada = 0;
+let montoCalculado = 0;
+let plazoCalculado = 0;
+let creditoAprobado = false;
 
 function ocultarSecciones() {
     document.getElementById("parametros").classList.remove("activa");
     document.getElementById("clientes").classList.remove("activa");
     document.getElementById("credito").classList.remove("activa");
     document.getElementById("listaCreditos").classList.remove("activa");
+
+    // para el video paso 2
+    document.getElementById("creditosVIP").classList.remove("activa");
+    document.getElementById("acercaDe").classList.remove("activa");
 }
  
 function mostrarSeccion(id) {
@@ -30,12 +37,21 @@ function guardarTasa() {
     } else {
         mostrarTexto("mensajeTasa", "La tasa debe estar entre 10% y 20%");
     }
+
+    //para el video paso 3
+    let montoMax = recuperarFloat("montoMaximoParam");
+    if (!isNaN(montoMax) && montoMax > 0) {
+        montoMaximo = montoMax; 
+        mostrarTexto("mensajeTasa", "✅ Tasa y monto máximo configurados.");
+    }
 }
  
 function guardarCliente() {
     let cedula   = recuperaraTexto("cedula");
     let nombre   = recuperaraTexto("nombre");
     let apellido = recuperaraTexto("apellido");
+    //para el video paso 4
+    let telefono = recuperaraTexto("telefono")
     let ingresos = recuperarFloat("ingresos");
     let egresos  = recuperarFloat("egresos");
  
@@ -46,6 +62,7 @@ function guardarCliente() {
             cedula   : cedula,
             nombre   : nombre,
             apellido : apellido,
+            telefono: telefono, //paso 4
             ingresos : ingresos,
             egresos  : egresos
         };
@@ -53,6 +70,7 @@ function guardarCliente() {
     } else {
         clienteExistente.nombre   = nombre;
         clienteExistente.apellido = apellido;
+        clienteExistente.telefono = telefono; //paso 4
         clienteExistente.ingresos = ingresos;
         clienteExistente.egresos  = egresos;
     }
@@ -72,6 +90,7 @@ function pintarClientes() {
                 <td>${c.cedula}</td>
                 <td>${c.nombre}</td>
                 <td>${c.apellido}</td>
+                <td>${c.telefono || "—"}</td>
                 <td>$${c.ingresos}</td>
                 <td>$${c.egresos}</td>
                 <td>
@@ -99,6 +118,7 @@ function seleccionarCliente(cedula) {
         mostrarTextoEnCaja("cedula",   cliente.cedula);
         mostrarTextoEnCaja("nombre",   cliente.nombre);
         mostrarTextoEnCaja("apellido", cliente.apellido);
+        mostrarTextoEnCaja("telefono",  cliente.telefono || "");
         mostrarTextoEnCaja("ingresos", cliente.ingresos);
         mostrarTextoEnCaja("egresos",  cliente.egresos);
     }
@@ -118,6 +138,8 @@ function limpiar() {
     mostrarTextoEnCaja("cedula",   "");
     mostrarTextoEnCaja("nombre",   "");
     mostrarTextoEnCaja("apellido", "");
+    //para el video paso 6
+    mostrarTextoEnCaja("telefono", "");
     mostrarTextoEnCaja("ingresos", "");
     mostrarTextoEnCaja("egresos",  "");
     clienteSeleccionado = null;
@@ -154,6 +176,13 @@ function calcularCredito() {
 
     montoCalculado = recuperarFloat("montoCredito");
     plazoCalculado = recuperarInt("plazoCredito");
+
+    //para el video paso 7
+    if (montoMaximo > 0 && montoCalculado > montoMaximo) {
+    alert("❌ El monto supera el máximo permitido ($" + montoMaximo + ").");
+    mostrarTextoEnCaja("montoCredito", "");
+    return;
+}
  
     let capacidadPago = clienteSeleccionado.ingresos - clienteSeleccionado.egresos;
 
@@ -233,6 +262,46 @@ function buscarCreditos(cedula) {
     }
 
     return resultado;
+}
+
+function mostrarCreditosVIP() {
+    mostrarSeccion("creditosVIP");
+    pintarCreditosVIP();
+}
+
+//para el video paso 8
+
+function pintarCreditosVIP() {
+    let tabla = document.getElementById("tablaVIP");
+    let mensaje = document.getElementById("mensajeVIP");
+    tabla.innerHTML = "";
+
+    let listaVIP = [];
+    for (let i = 0; i < creditos.length; i++) {
+        if (creditos[i].monto > 5000) {
+            listaVIP.push(creditos[i]);
+        }
+    }
+
+    if (listaVIP.length === 0) {
+        mensaje.innerText = "⚠️ No hay créditos mayores a $5,000.";
+        return;
+    }
+    mensaje.innerText = "";
+
+    for (let i = 0; i < listaVIP.length; i++) {
+        let cr = listaVIP[i];
+        tabla.innerHTML += `
+            <tr>
+                <td>${cr.cedula}</td>
+                <td>${cr.nombre}</td>
+                <td>${cr.apellido}</td>
+                <td>$${cr.monto}</td>
+                <td>${cr.tasa}%</td>
+                <td>${cr.plazo} meses</td>
+                <td>$${cr.cuota.toFixed(2)}</td>
+            </tr>`;
+    }
 }
 
 function buscarCreditosCliente() {
